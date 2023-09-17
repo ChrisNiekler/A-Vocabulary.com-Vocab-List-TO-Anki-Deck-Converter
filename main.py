@@ -18,16 +18,19 @@ txt = "Welcome, to create an Anki Vocabulary deck please select a deck from "\
     " URL of that page."\
     "\nIt should look like this http://vocabulary.com/lists/236361"
 
-def main():    
+def main():
+    print("This Version contains a temporary fix to some issues of getting the data. For this version you must have Chrome installed or change the line 26 to line 27.")    
     print(txt)
     again = True
     debug = False
+    wd = webdriver.Chrome()
+    # wd = webdriver.Firefox()
 
     while again:
         isGoodUrl = False
         while not isGoodUrl:
             url = input("Input list URL: ")
-    #       url = "http://vocabulary.com/lists/236361"  # fixed url for testing
+            # url = "http://vocabulary.com/lists/236361"  # fixed url for testing
 
             url = url.strip()
             pattern = re.compile(
@@ -41,20 +44,19 @@ def main():
         if 'http' not in url:
             url = 'http://' + url
 
-        response = requests.get(url)
-        print(response)
-        if response.status_code == 200:
+        wd.get(url)
+        if True:  # temporary fix, this should check the response code
             print("Processing Wordlist!")
             words = []
-            soup = bs4.BeautifulSoup(response.text, "html.parser")
+            soup = bs4.BeautifulSoup(wd.page_source, "html.parser")
             title = soup.select('title')[0].text
-            title = title.replace(" : Vocabulary.com", "")  # remove suffix
-            title = title.replace(" - Vocabulary List", "")
+            title = title.replace("Vocabulary.com", "")  # remove suffix
+            title = title.replace(" - Vocabulary List |", "")
             print('Title of list: ' + title)
             for i, li in enumerate(soup.select('li')):
                 words.append(li.text)
 
-            lastIndex = words.index('Play the Challenge')
+            lastIndex = words.index('VocabTrainer™')
             words = words[21: lastIndex]
             length = len(words)
             word_list = [['', '', ''] for i in range(length)]
@@ -90,7 +92,7 @@ def main():
 
             package = genanki.Package(my_deck)
             package.media_files = [r".\sound\\" + w[0] + ".mp3" for w in word_list]
-            package.write_to_file(title + '.apkg')
+            package.write_to_file(rf".\created_decks\\{title}.apkg")
             print("Deck has been created!")
 
         else:
