@@ -19,6 +19,7 @@ This is a a console program which i wrote in python. It can automatically create
 ## Things you should know
 1. You need to manually change the template and deck name
 2. Sometimes if the list have more than 100 words, it can only load the first 100 words, i dont know how to solve this yet...
+3. There is a build in pause for each word because of https://cloud.google.com/text-to-speech/quotas which says that you can only request 1000 words per minute.
 
 <img src="https://img.icons8.com/wired/64/26e07f/dictionary.png" height="50"/>
 <a href="https://icons8.com/icon/54640/dictionary">Green Dictionary icon by Icons8</a><br/>
@@ -31,9 +32,11 @@ This is a a console program which i wrote in python. It can automatically create
 
 ## How does this work
 
-This programm is fairly simple: first it scrap the word, definition and example from the url you entered, and put it into a 2 by 3 list. then it feeds the list to genanki. that's it. 
+This program is fairly simple: first it scrap the word, definition and example from the url you entered, and put it into a 2 by 3 list. then it feeds the list to genanki. that's it. 
 
-
+## Possible next goals/ideas
+1. Use CSV files to create decks
+2. Use Kindle DB file to create decks
 ___
 Any question or comments are welcome
 
